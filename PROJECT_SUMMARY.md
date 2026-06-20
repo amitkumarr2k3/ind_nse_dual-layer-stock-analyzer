@@ -46,8 +46,8 @@ cat config.json
 
 ### 2. Run Analysis
 ```bash
-# Execute analysis (takes ~45-60 min for 37 stocks)
-python Stock_Agent.py
+# Execute analysis
+python Stock_Agent_fixed_v2.py --config config_maincheck.json
 ```
 
 ### 3. Review Results
@@ -65,11 +65,11 @@ python Stock_Agent.py
 - **Rule-Based:** Traditional technical + fundamental (0-60), for reference/comparison
 - **Both:** Side-by-side in Excel for easy comparison
 
-### ✅ 36 Output Columns
+### ✅ 50+ Output Columns
 ```
-Identification (4)        | Holdings (2)           | Fundamentals (6)
-Technical (6)            | Valuation (5)          | Quality (2)
-Rule-Based (4)           | AI-Based (5)           | Metadata (1)
+Identification (4)        | Holdings (6)           | Fundamentals (6)
+Technical (6)            | Valuation (4)          | Quality (2)
+Rule-Based (4)           | AI-Based (9)           | Final Rating (2) | Metadata (1)
 ```
 
 ### ✅ Configuration System
@@ -90,63 +90,10 @@ Rule-Based (4)           | AI-Based (5)           | Metadata (1)
 
 ### ✅ Comprehensive Documentation
 1. **README.md** - How to use, columns explained, config guide
-2. **AI_VS_RULE_BASED_GUIDE.md** - When each system is right, decision matrix
+2. **AI_VS_RULE_BASED_GUIDE.md** - Plain-English explanation of AI vs Rule-Based ratings
 3. **MCP_AGENT_SETUP.md** - Daily automation, scheduling, monitoring
 4. **.github/copilot-instructions.md** - Repo-scoped Copilot guidance
 5. **.github/agents/stock-analysis.agent.md** - Stock-analysis agent description
-
----
-
-## 📊 Latest Analysis Results
-
-**Run:** 2025-01-15 | **Stocks Analyzed:** 35 / 37 | **Status:** ✅ Success
-
-### Top 10 Stocks by AI Score
-
-| Rank | Company | AI Score | AI Rec | Rule Rating | Confidence |
-|------|---------|----------|--------|------------|------------|
-| 1 | MAHSEAMLES | 80 | STRONG BUY | WATCHLIST | HIGH |
-| 2 | NAVINFLUOR | 70 | BUY | WATCHLIST | MEDIUM-HIGH |
-| 3 | FIEMIND | 70 | BUY | WATCHLIST | MEDIUM-HIGH |
-| 4 | ACE | 70 | BUY | WATCHLIST | MEDIUM-HIGH |
-| 5 | MCX | 70 | BUY | WATCHLIST | MEDIUM-HIGH |
-| 6 | NAVA | 65 | BUY | WATCHLIST | MEDIUM-HIGH |
-| 7 | NH | 65 | BUY | WATCHLIST | MEDIUM-HIGH |
-| 8 | TDPOWERSYS | 65 | BUY | WATCHLIST | MEDIUM-HIGH |
-| 9 | KIRLOSENG | 60 | BUY | WATCHLIST | MEDIUM-HIGH |
-| 10 | SALZERELEC | 60 | BUY | WATCHLIST | MEDIUM-HIGH |
-
----
-
-## 💡 Key Insights
-
-### AI vs Rule-Based Comparison
-
-Notice the **divergence**: Many stocks show **AI = BUY, Rule = WATCHLIST**
-
-**What this means:**
-- ✅ Strong fundamentals (P/B, ROE, ROCE, growth)
-- ✅ Valuations are reasonable
-- ❌ Price momentum not yet strong
-- **Action:** Opportunity for value investors to accumulate while momentum builds
-
-### Example: MAHSEAMLES
-```
-AI Score: 80 (STRONG BUY) ✅ 
-- Excellent P/B (1.22) → Valuation: 20/20
-- RSI=51, Bullish MACD  → Momentum: 20/20
-- Strong quality metrics → Quality: 18/20
-- Healthy leverage      → Safety: 10/15
-
-Rule-Based: 30 (WATCHLIST)
-- Needs momentum >65 for buy signal
-- AI disagrees because fundamentals are solid
-
-Investment Implication:
-→ Buy for long-term accumulation
-→ Momentum will likely follow fundamentals
-→ Patient capital wins here
-```
 
 ---
 
@@ -154,7 +101,7 @@ Investment Implication:
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│           Stock_Agent.py (Main Engine)                   │
+│     Stock_Agent_fixed_v2.py (Main Engine)          │
 ├─────────────────────────────────────────────────────────┤
 │                                                          │
 │  DATA EXTRACTION                                         │
@@ -185,20 +132,23 @@ Investment Implication:
 ## 📈 AI Scoring Formula (0-100)
 
 ```
-TOTAL SCORE = Sum of 6 dimensions:
+TOTAL SCORE = Sum of 6 sector-aware dimensions:
 
-1. VALUATION (0-20)     - P/B, P/S, PEG ratios
+1. VALUATION (0-15)     - PE vs sector median, P/B
 2. MOMENTUM (0-20)      - RSI, MACD signals
-3. TREND (0-15)         - Price vs EMA200, EMA50
-4. QUALITY (0-20)       - ROE, ROCE metrics
-5. SAFETY (0-15)        - Debt/Equity, margins
-6. GROWTH (0-10)        - Revenue, earnings growth
+3. TREND (0-15)         - Price vs EMA 20/50/200
+4. QUALITY (0-20)       - ROE, ROCE, profit margins
+5. SAFETY (0-15)        - Debt/Equity, interest coverage, pledge %
+6. GROWTH (0-15)        - 3Y revenue and profit CAGR
 
 Recommendation:
 ≥75  → STRONG BUY (HIGH confidence)
 60-74 → BUY (MEDIUM-HIGH confidence)
 45-59 → HOLD (MEDIUM confidence)
-<45  → REDUCE/AVOID (MEDIUM confidence)
+<45  → REDUCE / AVOID
+
+Composite Rating = AI score (70%) + Rule score (30%) + quality bonuses
+                   Always capped to match AI recommendation
 ```
 
 ---
@@ -227,7 +177,7 @@ See: MCP_AGENT_SETUP.md → Step 2
 ### Option 2: Linux/Mac Cron (Flexible)
 ```bash
 # Add to crontab
-0 16 * * * cd /path && python Stock_Agent.py
+0 16 * * * cd /path && python Stock_Agent_fixed_v2.py
 See: MCP_AGENT_SETUP.md → Step 3
 ```
 

@@ -37,7 +37,7 @@ pip install mcp
 ### 2. Generate the Excel Report First
 
 ```bash
-python Stock_Agent.py
+python Stock_Agent_fixed_v2.py
 ```
 
 ### 3. Use the Included Workspace MCP Config
@@ -100,7 +100,7 @@ class StockAnalysisAgent:
     
     def __init__(self, config_file="config.json"):
         self.config_file = config_file
-        self.script = "Stock_Agent.py"
+        self.script = "Stock_Agent_fixed_v2.py"
         self.timestamp = datetime.now().isoformat()
     
     def run(self):

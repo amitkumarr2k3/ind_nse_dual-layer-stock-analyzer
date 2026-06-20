@@ -69,12 +69,12 @@ pip install yfinance pandas requests beautifulsoup4 ta-lib openpyxl mcp
 
 ### 3. Run Analysis
 ```bash
-python Stock_Agent.py
+python Stock_Agent_fixed_v2.py
 ```
 
 ### 4. Ask a Grounded Stock Question From Excel
 ```bash
-python Stock_Agent.py --ask-stock MCX --question "Should I buy this stock for long-term accumulation?"
+python Stock_Agent_fixed_v2.py --ask-stock MCX --question "Should I buy this stock for long-term accumulation?"
 ```
 
 This query mode reads only the generated `Analysis` sheet and uses the stored Excel evidence:
@@ -128,11 +128,15 @@ Grounding rules:
 | Sector | Business sector classification |
 | Market Cap Category | Large Cap (>50K Cr) / Mid Cap (5K-50K) / Small Cap (<5K) |
 
-### B. Holdings & Ownership (2 columns)
+### B. Holdings & Ownership (6 columns)
 | Column | Description |
 |--------|-------------|
 | Holding Funds (Top 5) | Named fund houses + individual shareholders with stakes |
-| Avg. Holding % | Average of major institutional/insider holdings |
+| Promoter Holding (%) | Promoter / founder stake percentage |
+| FII Holding (%) | Foreign Institutional Investors holding % |
+| DII Holding (%) | Domestic Institutional Investors holding % |
+| MF Holding (%) | Mutual Fund holding % (from NSE/Screener) |
+| FII / DII Trend (3Q) | Trend of FII and DII holdings over last 3 quarters |
 
 ### C. Fundamental Metrics (7 columns)
 | Column | Description |
@@ -177,7 +181,7 @@ Grounding rules:
 | Mid-Term Goal Horizon | Suggested holding period with reasoning |
 | Rule-Based Rating | Action: HOLD/ACCUMULATE, HOLD, or WATCHLIST |
 
-### H. AI-Based Analysis (5 columns) - **PRIMARY RECOMMENDATION**
+### H. AI-Based Analysis (8 columns) - **PRIMARY RECOMMENDATION**
 | Column | Description |
 |--------|-------------|
 | AI Score | Composite AI score (0-100) across 6 dimensions |
@@ -185,8 +189,18 @@ Grounding rules:
 | AI Recommendation | **STRONG BUY / BUY / HOLD / REDUCE/AVOID** |
 | AI Confidence | Confidence level: HIGH / MEDIUM-HIGH / MEDIUM |
 | AI Justification | Detailed explanation of recommendation with top scoring factors |
+| Sector Model | Scoring profile used (e.g. General, Bank/NBFC, Insurance) |
+| Data Quality | Completeness label: HIGH / MEDIUM / LOW |
+| Risk Flags | Hard blockers or soft flags that reduced conviction |
+| Why AI View Can Be Wrong | Guardrail note on what to watch out for |
 
-### I. Metadata (1 column)
+### I. Final Rating (2 columns)
+| Column | Description |
+|--------|-------------|
+| Composite Rating | Letter grade + label combining AI (70%) + Rule (30%) score, capped to AI recommendation |
+| Final Rating | Same as Composite Rating (backward compatibility) |
+
+### J. Metadata (1 column)
 | Column | Description |
 |--------|-------------|
 | Last Updated | Timestamp of analysis execution |
@@ -240,19 +254,24 @@ The AI Score (0-100) is calculated across **6 independent dimensions**:
 
 ```
 AI-Stock-Agent/
-├── Stock_Agent.py           # Main analysis script
-├── stock_excel_mcp_server.py # MCP server for Excel-backed stock Q&A
-├── config.json              # Configuration (stocks, thresholds, output)
-├── latest_run_report.txt     # Latest run summary (auto-generated)
-├── analysis_history/         # Archived CSV snapshots (auto-generated)
+├── Stock_Agent_fixed_v2.py   # Main analysis script
+├── stock_excel_mcp_server.py  # MCP server for Excel-backed stock Q&A
+├── config.json                # Default configuration
+├── config_maincheck.json      # Full symbol list config
+├── config_maincheck_small.json # Small test config
+├── config_test.json           # Test config
+├── latest_run_report.txt      # Latest run summary (auto-generated)
+├── analysis_history/          # Archived CSV snapshots (auto-generated)
 ├── .github/
-│   ├── copilot-instructions.md      # Repo-wide Copilot guidance
-│   └── agents/stock-analysis.agent.md  # Reusable stock-analysis agent description
-├── .vscode/mcp.json         # Workspace MCP server registration for VS Code
-├── README.md                # This file
-├── stock_analysis.log       # Execution log (auto-generated)
-├── AI_STOCK_ANALYSIS.xlsx   # Output analysis (auto-generated)
-└── Stock_Agent_old.py       # Backup of previous version
+│   ├── copilot-instructions.md       # Repo-wide Copilot guidance
+│   ├── skill.md                      # Live AI symbol selection rules
+│   └── agents/stock-analysis.agent.md
+├── .vscode/mcp.json           # Workspace MCP server registration
+├── README.md                  # This file
+├── AI_VS_RULE_BASED_GUIDE.md  # Plain-English explanation of both rating systems
+├── SKILL_SMALLCAP_SCREENER.md # Small/micro cap screener config
+├── stock_analysis.log         # Execution log (auto-generated)
+└── AI_STOCK_ANALYSIS.xlsx     # Output analysis (auto-generated)
 ```
 
 ---
@@ -325,7 +344,7 @@ Use an app password and set it in an environment variable:
 PowerShell (current session):
 ```powershell
 $env:STOCK_AGENT_EMAIL_PASSWORD = "your-16-char-app-password"
-python .\Stock_Agent.py
+python .\Stock_Agent_fixed_v2.py
 ```
 
 PowerShell (persist for your user profile):
@@ -423,7 +442,7 @@ If the filename is misspelled, Copilot may ignore it. Use the exact name `copilo
 
 ### Run Standard Analysis
 ```bash
-python Stock_Agent.py
+python Stock_Agent_fixed_v2.py
 ```
 Processes symbols based on `symbol_selection.mode`, then exports to `AI_STOCK_ANALYSIS.xlsx`
 
@@ -545,13 +564,13 @@ tail -20 stock_analysis.log
 ```
 Task Name: AI Stock Analysis
 Trigger: Daily at 4:00 PM (after market close)
-Action: python "C:\path\to\Stock_Agent.py"
+Action: python "C:\path\to\Stock_Agent_fixed_v2.py"
 ```
 
 ### Linux/Mac (cron)
 ```bash
 # Daily at 4 PM IST (10:30 AM UTC)
-0 16 * * * /usr/bin/python3 /path/to/Stock_Agent.py
+0 16 * * * /usr/bin/python3 /path/to/Stock_Agent_fixed_v2.py
 ```
 
 ### MCP Agent Integration
@@ -563,7 +582,7 @@ import json
 from datetime import datetime
 
 def run_daily_analysis():
-    result = subprocess.run(["python", "Stock_Agent.py"], capture_output=True)
+    result = subprocess.run(["python", "Stock_Agent_fixed_v2.py"], capture_output=True)
     
     if result.returncode == 0:
         return {"status": "success", "timestamp": datetime.now().isoformat()}
