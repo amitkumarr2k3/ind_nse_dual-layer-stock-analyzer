@@ -1,0 +1,14 @@
+# Generated outputs
+*.xlsx
+*.log
+latest_run_report*.txt
+eval_report.txt
+
+# Runtime data
+analysis_history*/
+__pycache__/
+.venv/
+
+# Temp / lock files
+tmp*.xlsx
+~$*.xlsx
