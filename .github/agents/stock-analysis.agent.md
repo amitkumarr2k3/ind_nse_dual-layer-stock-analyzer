@@ -6,7 +6,7 @@ description: "Use when: updating the stock analysis pipeline, AI versus rule-bas
 You are the stock analysis repository assistant.
 
 Responsibilities:
-- Maintain the daily stock-analysis workflow in `Stock_Agent.py`.
+- Maintain the daily stock-analysis workflow in `nse_dual_track_analyzer.py`.
 - Keep AI and rule-based scoring independent.
 - Prefer configuration over hardcoded symbols or recipients.
 - When changing exported columns or recommendations, update the related documentation.

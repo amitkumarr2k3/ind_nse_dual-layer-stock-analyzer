@@ -170,7 +170,7 @@ Composite Rating = AI score (70%) + Rule score (30%) + quality bonuses
 
 ### Option 1: Windows Task Scheduler (Easiest)
 ```
-Create task: Run Stock_Agent.py daily at 4:00 PM
+Create task: Run nse_dual_track_analyzer.py daily at 4:00 PM
 See: MCP_AGENT_SETUP.md → Step 2
 ```
 
@@ -264,7 +264,7 @@ Example: When both MCX and NAVINFLUOR align
 | No data for symbol | Verify NSE format ("SYMBOL.NS") |
 | Screener.in timeout | Retry later; will fallback to yfinance |
 | Slow execution | Reduce stock count or upgrade machine |
-| Unicode errors | Already fixed; update your Stock_Agent.py |
+| Unicode errors | Already fixed; update your nse_dual_track_analyzer.py |
 
 **Logs:** Check `stock_analysis.log` for details
 
@@ -275,7 +275,7 @@ Example: When both MCX and NAVINFLUOR align
 1. **Get Started:** Read `README.md`
 2. **Understand AI:** Read `AI_VS_RULE_BASED_GUIDE.md`
 3. **Set Up Daily:** Read `MCP_AGENT_SETUP.md`
-4. **API Reference:** Docstrings in `Stock_Agent.py` (fully documented)
+4. **API Reference:** Docstrings in `nse_dual_track_analyzer.py` (fully documented)
 
 ---
 
@@ -305,7 +305,7 @@ Example: When both MCX and NAVINFLUOR align
 
 ## 📞 Support Resources
 
-- **Code Issues:** Check `Stock_Agent.py` docstrings (fully documented)
+- **Code Issues:** Check `nse_dual_track_analyzer.py` docstrings (fully documented)
 - **Configuration:** Edit `config.json` and reference `README.md`
 - **Interpretation:** Refer to `AI_VS_RULE_BASED_GUIDE.md` for analysis questions
 - **Automation:** Use `MCP_AGENT_SETUP.md` for scheduling help
@@ -340,7 +340,7 @@ You now have a **production-ready, AI-powered stock analysis platform** that:
 
 **Run your first analysis:**
 ```bash
-python Stock_Agent.py
+python nse_dual_track_analyzer.py
 ```
 
 **Expected output:** `AI_STOCK_ANALYSIS.xlsx` with AI vs Rule-Based recommendations

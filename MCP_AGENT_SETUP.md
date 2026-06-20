@@ -18,9 +18,9 @@ The main script now already supports:
 - a text run summary in `latest_run_report.txt`
 - optional SMTP email delivery driven by `config.json`
 - symbol source selection: predefined `config.json` stocks or live AI selection from `.github/skill.md`
-- grounded stock Q&A through `python Stock_Agent.py --ask-stock ... --question ...`
+- grounded stock Q&A through `python nse_dual_track_analyzer.py --ask-stock ... --question ...`
 
-That means you can schedule `Stock_Agent.py` directly if you only need daily execution. Use a wrapper only if you want extra orchestration or monitoring.
+That means you can schedule `nse_dual_track_analyzer.py` directly if you only need daily execution. Use a wrapper only if you want extra orchestration or monitoring.
 
 For interactive IDE usage, prefer the new MCP server instead of the wrapper example below.
 
@@ -611,7 +611,7 @@ def analyze_parallel(stocks, config, max_workers=5):
 | Email not sending | Verify SMTP credentials; enable "less secure apps" for Gmail |
 | Analysis takes too long | Reduce stock count; use parallel processing |
 | Memory issues | Split stocks into batches; run on machine with more RAM |
-| API rate limiting | Increase delay in `Stock_Agent.py`; use API keys |
+| API rate limiting | Increase delay in `nse_dual_track_analyzer.py`; use API keys |
 
 ---
 
