@@ -1,8 +1,8 @@
-# MCP Agent Setup Guide - Daily Stock Analysis
+# MCP Agent Setup Guide - NSE Dual-Track Stock Analyzer (Daily Automation)
 
 ## 🤖 Overview
 
-This guide enables automated daily execution of the AI Stock Analysis Agent via MCP (Model Context Protocol) agent scheduling.
+This guide enables automated daily execution of the **NSE Dual-Track Stock Analyzer** via MCP (Model Context Protocol) agent scheduling. The analyzer tracks Indian equities listed on the National Stock Exchange (NSE).
 
 The repository now also includes an interactive MCP server for stock Q&A against the generated Excel output:
 - `stock_excel_mcp_server.py`

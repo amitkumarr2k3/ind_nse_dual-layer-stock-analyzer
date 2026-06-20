@@ -1,4 +1,4 @@
-# AI vs Rule-Based Rating: Simple Guide
+# NSE Dual-Track Stock Analyzer: AI vs Rule-Based Rating Guide
 
 ## What Are These Two Ratings?
 

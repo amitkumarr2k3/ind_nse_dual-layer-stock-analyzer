@@ -1,14 +1,42 @@
-# Generated outputs
+# ============================================================
+# NSE Dual-Track Stock Analyzer - .gitignore
+# ============================================================
+
+# Generated Excel outputs (contain live data, not for source control)
 *.xlsx
+*.xlsm
+~$*.xlsx
+
+# Execution logs
 *.log
-latest_run_report*.txt
 eval_report.txt
 
-# Runtime data
-analysis_history*/
-__pycache__/
-.venv/
+# Run reports (auto-generated each run)
+latest_run_report*.txt
 
-# Temp / lock files
+# Historical CSV snapshots (large, auto-generated)
+analysis_history*/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environment
+.venv/
+venv/
+
+# Temp / lock files created during atomic writes
 tmp*.xlsx
-~$*.xlsx
+tmp*.csv
+tmp*.txt
+.tmp_stock_agent_*
+
+# IDE / OS
+.vscode/settings.json
+.DS_Store
+Thumbs.db
+
+# Secrets (never commit)
+*.env
+secrets.json

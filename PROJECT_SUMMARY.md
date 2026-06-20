@@ -1,4 +1,4 @@
-# AI Stock Analysis Agent - Project Summary
+# NSE Dual-Track Stock Analyzer - Project Summary
 
 ## ✅ Completed Implementation
 
@@ -11,7 +11,7 @@ Your AI-powered stock analysis platform is **fully operational** with dual-track
 ### Core Application
 | File | Purpose | Size |
 |------|---------|------|
-| **Stock_Agent.py** | Main analysis engine with AI + rule-based scoring | 34.6 KB |
+| **nse_dual_track_analyzer.py** | Main analysis engine with AI + rule-based scoring | ~35 KB |
 | **config.json** | Runtime configuration including symbol-selection mode | 1 KB |
 | **.github/skill.md** | Live AI symbol-selection query rules for dynamic discovery | Managed manually |
 | **AI_STOCK_ANALYSIS.xlsx** | Latest analysis output (36 columns, 35 stocks) | 14.9 KB |
@@ -47,7 +47,7 @@ cat config.json
 ### 2. Run Analysis
 ```bash
 # Execute analysis
-python Stock_Agent_fixed_v2.py --config config_maincheck.json
+python nse_dual_track_analyzer.py --config config_maincheck.json
 ```
 
 ### 3. Review Results

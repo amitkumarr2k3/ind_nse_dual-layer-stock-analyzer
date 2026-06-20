@@ -1,43 +1,61 @@
 """
 ================================================================================
-AI-POWERED STOCK ANALYSIS AGENT (Daily Execution)
+NSE DUAL-TRACK STOCK ANALYZER
 ================================================================================
 
+PROJECT: NSE Dual-Track Stock Analyzer
+SCOPE:   Indian equities listed on the National Stock Exchange (NSE)
+
 PURPOSE:
-    Automated daily stock analysis platform that performs dual-layer analysis:
-    1. RULE-BASED: Traditional technical + fundamental metrics (for comparison)
-    2. AI-BASED: Machine-learning-style composite scoring + recommendations
-    
-    Keeps both analyses separate to enable AI vs Rule comparison without influence.
+    Automated daily stock analysis platform for NSE-listed Indian stocks.
+    Performs dual-layer analysis keeping both systems fully independent:
+
+    1. RULE-BASED: Traditional technical + fundamental checklist (reference)
+    2. AI-BASED:   Sector-aware composite scoring + recommendations (primary)
+
+    Designed for retail investors tracking Indian markets who want both a
+    quick rule-based sanity check AND a deeper AI-driven quality assessment
+    side-by-side in a single Excel workbook.
+
+DATA SOURCES:
+    - yfinance          : Prices, technicals, basic fundamentals
+    - Screener.in       : Indian P/E, ROE, ROCE, growth CAGRs (3Y/5Y/10Y)
+    - NSE India API     : Shareholding patterns (FII, DII, MF, Promoter)
 
 ARCHITECTURE:
     - Configuration-driven (config.json for symbols, thresholds, output)
     - Modular data extraction (technical, fundamental, investor)
-    - Dual recommendation engines (rule-based vs AI-based)
-    - Comprehensive column set for deep analysis
+    - Sector-aware dual recommendation engines (rule-based vs AI-based)
+    - Comprehensive 40+ column Excel export
     - MCP-ready for daily scheduled execution
 
 COLUMNS OUTPUT:
     - Identification: Company Name, Full Name, Sector, Market Cap Category
-    - Holdings: Fund houses, individuals, average holdings
-    - Fundamentals: P/E, ROE, ROCE, Debt/Equity, Growth rates (3Y)
+    - Holdings: Promoter %, FII %, DII %, MF %, Top fund houses, 3Q trend
+    - Fundamentals: P/E, ROE, ROCE, Debt/Equity
+    - Growth: Revenue & Profit CAGR (3Y / 5Y / 10Y or 7Y fallback)
     - Technical: Price, 52W High/Low, RSI, MACD, EMA Status
-    - Valuation: Price-to-Book, Price-to-Sales, PEG, Beta
+    - Valuation: Price-to-Book, Price-to-Sales, PEG, Sector PE comparison, Beta
     - Quality: Profit Margin, Operating Margin, Dividend Yield
-    - Momentum: RSI trend, MACD trend
-    - RULE-BASED: Score, Action, Goal Horizon (for reference)
-    - AI-BASED: Score, Ranking, Recommendation, Justification (independent)
+    - RULE-BASED: Score (0-60), Action, Goal Horizon (for reference)
+    - AI-BASED: Score (0-100), Recommendation, Justification (independent)
+    - Composite Rating: Blended score capped to AI recommendation level
     - Metadata: Rank, Last Updated
 
 USAGE:
-    python Stock_Agent.py
-    (Symbols configured in config.json, not in code)
-    
-SCHEDULING (MCP Agent - Daily):
+    python nse_dual_track_analyzer.py
+    python nse_dual_track_analyzer.py --config config.json
+    python nse_dual_track_analyzer.py --ask-stock MCX --question "Is this a buy?"
+
+SCHEDULING (Daily):
     Can be scheduled via cron or Windows Task Scheduler:
     - Daily execution at market close (3:30 PM IST)
     - Output written to AI_STOCK_ANALYSIS.xlsx
     - Logs written to stock_analysis.log
+
+NOTE:
+    This tool is designed for Indian stocks traded on NSE (symbols end in .NS).
+    It is NOT suitable for US/global equities without adaptation.
 
 ================================================================================
 """
