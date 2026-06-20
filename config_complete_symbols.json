@@ -2970,10 +2970,10 @@
     "timeout_seconds": 30,
     "retry_attempts": 3,
     "retry_delay_seconds": 5,
-    "sender_email": "rahilrai2k13@gmail.com",
+    "sender_email": "YOUR_SENDER_EMAILID",
     "sender_password_env": "STOCK_AGENT_EMAIL_PASSWORD",
     "recipients": [
-      "amitkumarr2k3@gmail.com"
+      "YOUR_RECEIVER_EMAILID"
     ]
   }
 }
